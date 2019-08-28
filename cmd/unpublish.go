@@ -12,7 +12,7 @@ var unpublishCmd = &cobra.Command{
 	Use:   "unpublish [project]",
 	Short: "Unpublish your project",
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) < 1{
+		if len(args) < 1 {
 			fmt.Println("Usage:\n  ctpm unpublish [string]")
 			os.Exit(1)
 		}

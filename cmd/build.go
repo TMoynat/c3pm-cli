@@ -12,7 +12,7 @@ var buildCmd = &cobra.Command{
 	Use:   "build [project]",
 	Short: "Build your project",
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) < 1{
+		if len(args) < 1 {
 			fmt.Println("Usage:\n  ctpm build [string]")
 			os.Exit(1)
 		}
