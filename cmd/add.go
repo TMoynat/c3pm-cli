@@ -21,7 +21,9 @@ var addCmd = &cobra.Command{
 		}
 
 		newDependency := args[0]
-		viper.Set("dependencies", newDependency)
+		prevDependencies := viper.GetStringSlice("dependencies")
+		dependencies := append(prevDependencies, newDependency)
+		viper.Set("dependencies", dependencies)
 
 		writeConfigFatal()
 		return nil
