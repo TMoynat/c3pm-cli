@@ -13,7 +13,7 @@ var runCmd = &cobra.Command{
 	Short: "Run scripts",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
-			log.Fatal("Usage:\n  ctpm run [string]")
+			log.Fatal("Usage: ctpm run [string]")
 		}
 		fmt.Println("run called with arg :", args[0])
 	},

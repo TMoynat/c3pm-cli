@@ -13,7 +13,7 @@ var removeCmd = &cobra.Command{
 	Short: "Remove a dependency to your project",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
-			log.Fatal("Usage:\n  ctpm remove [string]")
+			log.Fatal("Usage: ctpm remove [string]")
 		}
 		fmt.Println("remove called with arg :", args[0])
 	},

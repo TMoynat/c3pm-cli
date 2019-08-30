@@ -13,7 +13,7 @@ var publishCmd = &cobra.Command{
 	Short: "Publish your project",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
-			log.Fatal("Usage:\n  ctpm publish [string]")
+			log.Fatal("Usage: ctpm publish [string]")
 		}
 		fmt.Println("publish called with arg :", args[0])
 	},
