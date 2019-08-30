@@ -7,7 +7,7 @@ import (
 )
 
 var initCmd = &cobra.Command{
-	Use:   "add",
+	Use:   "init",
 	Short: "Initiate a new c3pm project",
 
 	RunE: func(cmd *cobra.Command, args []string) error {
