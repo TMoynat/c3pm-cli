@@ -5,9 +5,9 @@ const (
 )
 
 const (
-	CommandError            = 1
-	ConfigurationReadError  = 2
-	ConfigurationWriteError = 3
+	CommandExitStatus = iota + 1
+	ConfigurationReadExitStatus
+	ConfigurationWriteExitStatus
 )
 
 const (

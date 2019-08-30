@@ -21,7 +21,7 @@ func Execute() {
 		fmt.Printf("Error: %s.\n", err)
 		fmt.Println("Please use the help command to know more.")
 
-		os.Exit(constants.CommandError)
+		os.Exit(constants.CommandExitStatus)
 	}
 }
 

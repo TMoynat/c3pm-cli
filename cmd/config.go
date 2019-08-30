@@ -15,7 +15,7 @@ func readConfigFatal() {
 		fmt.Printf(
 			"Could not read %s. Have you created a c3pm project?\n",
 			constants.ConfigurationFileName)
-		os.Exit(constants.ConfigurationReadError)
+		os.Exit(constants.ConfigurationReadExitStatus)
 	}
 }
 
@@ -24,6 +24,6 @@ func writeConfigFatal() {
 		fmt.Printf("Error: %s.\n", err)
 		fmt.Println("Could not write configuration.")
 
-		os.Exit(constants.ConfigurationWriteError)
+		os.Exit(constants.ConfigurationWriteExitStatus)
 	}
 }

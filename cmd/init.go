@@ -12,10 +12,10 @@ import (
 
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Initiate a new c3pm project",
+	Short: "Initialize a new c3pm project",
 
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("User wants to initiate a project. This part will be interactive.")
+		fmt.Println("User wants to initialize a project. This part will be interactive.")
 
 		viper.Set("name", "this_is_a_test")
 		_ = viper.WriteConfigAs(constants.ConfigurationFileName)
