@@ -19,7 +19,7 @@ var rootCmd = &cobra.Command{
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Printf("Error: %s.\n", err)
-		fmt.Println("Please, use the help command to know more.")
+		fmt.Println("Please use the help command to know more.")
 
 		os.Exit(constants.CommandError)
 	}
