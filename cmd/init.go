@@ -19,25 +19,21 @@ var initCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		fmt.Println("User wants to initialize a project. This part will be interactive.")
 
-		viper.Set("name", "this_is_a_test")
-		_ = viper.WriteConfigAs(constants.ConfigurationFileName)
-
 		initProject()
 		return nil
 	},
 }
 
 func initProject() {
-	validateN := func(input string) error {
+	validateName := func(input string) error {
 		if len(input) < 1 {
 			return errors.New("Invalid name")
 		}
 		return nil
 	}
 
-	validateP := func(input string) error {
-		err := os.Mkdir(input, 0755)
-		if err != nil {
+	validatePath := func(input string) error {
+		if _, err := os.Stat(input); !os.IsNotExist(err) {
 			return errors.New("Invalid path")
 		}
 		return nil
@@ -45,28 +41,40 @@ func initProject() {
 
 	name := promptui.Prompt{
 		Label:    "Project name ",
-		Validate: validateN,
+		Validate: validateName,
 	}
-
 	pName, err := name.Run()
 	checkError(err)
 
 	author := promptui.Prompt{
 		Label:    "Author ",
 	}
-
 	pAuth, err := author.Run()
 	checkError(err)
 
 	path := promptui.Prompt{
 		Label:    "Project location ",
-		Validate: validateP,
+		Validate: validatePath,
 	}
-
 	pPath, err := path.Run()
 	checkError(err)
+	os.Mkdir(pPath, 0755)
 
-	fmt.Println("You choose : ", pName, pAuth, pPath)
+	description := promptui.Prompt{
+		Label:    "Description ",
+	}
+	pDesc, err := description.Run()
+	checkError(err)
+
+	configProject(pName, pAuth, pDesc)
+}
+
+func configProject(pName, pAuth, pDesc string) {
+	viper.Set("name", pName)
+	viper.Set("author", pAuth)
+	viper.Set("description", pDesc)
+	err := viper.WriteConfig()
+	checkError(err)
 }
 
 func checkError(err error) {
