@@ -10,7 +10,7 @@ import (
 )
 
 func readConfigMandatory() {
-	// If a config file is found, read it in.
+	// Read configuration, success or die
 	if err := viper.ReadInConfig(); err != nil {
 		fmt.Printf(
 			"Could not read %s. Have you created a c3pm project?\n",
