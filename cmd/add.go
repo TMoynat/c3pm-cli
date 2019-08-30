@@ -1,23 +1,32 @@
 package cmd
 
 import (
-	"fmt"
-	"log"
+	"errors"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	"ctpm/constants"
 )
 
-// addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add [dependency]",
 	Short: "Add a dependency to your project",
-	Run: func(cmd *cobra.Command, args []string) {
+
+	RunE: func(cmd *cobra.Command, args []string) error {
+		readConfigFatal()
+
 		if len(args) < 1 {
-			log.Fatal("Usage: ctpm add [string]")
+			return errors.New(constants.MissingCommandArgument)
 		}
-		viper.Set("Dependencies", args[0])
-		fmt.Println("add called with arg :", args[0])
+
+		newDependency := args[0]
+		prevDependencies := viper.GetStringSlice("dependencies")
+		dependencies := append(prevDependencies, newDependency)
+		viper.Set("dependencies", dependencies)
+
+		writeConfigFatal()
+		return nil
 	},
 }
 
