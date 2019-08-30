@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"os"
 )
 
 var configFile string
@@ -19,7 +21,10 @@ func Execute() {
 		//fmt.Println(err)
 		os.Exit(1)
 	}
-    viper.WriteConfig()
+    err := viper.WriteConfig()
+    if err != nil {
+    	log.Fatal(err)
+	}
 }
 
 func init() {
@@ -35,7 +40,7 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	configFile = ".c3pm.yml"
+	configFile = "c3pm.yml"
 	viper.SetConfigType("yml")
 	viper.SetConfigFile(configFile)
 	viper.AddConfigPath(".")

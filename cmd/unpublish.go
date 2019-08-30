@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"os"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -13,8 +13,7 @@ var unpublishCmd = &cobra.Command{
 	Short: "Unpublish your project",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
-			fmt.Println("Usage:\n  ctpm unpublish [string]")
-			os.Exit(1)
+			log.Fatal("Usage:\n  ctpm unpublish [string]")
 		}
 		fmt.Println("unpublish called with arg :", args[0])
 	},

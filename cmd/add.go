@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"os"
+	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -14,8 +14,7 @@ var addCmd = &cobra.Command{
 	Short: "Add a dependency to your project",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
-			fmt.Println("Usage:\n  ctpm add [string]")
-			os.Exit(1)
+			log.Fatal("Usage:\n  ctpm add [string]")
 		}
 		viper.Set("Dependencies", args[0])
 		fmt.Println("add called with arg :", args[0])
