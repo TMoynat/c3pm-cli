@@ -3,7 +3,11 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/spf13/viper"
+
 	"github.com/spf13/cobra"
+
+	"ctpm/constants"
 )
 
 var initCmd = &cobra.Command{
@@ -12,6 +16,10 @@ var initCmd = &cobra.Command{
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 		fmt.Println("User wants to initiate a project. This part will be interactive.")
+
+		viper.Set("name", "this_is_a_test")
+		_ = viper.WriteConfigAs(constants.ConfigurationFileName)
+
 		return nil
 	},
 }

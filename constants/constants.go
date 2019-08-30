@@ -5,8 +5,9 @@ const (
 )
 
 const (
-	CommandError       = 1
-	ConfigurationError = 2
+	CommandError            = 1
+	ConfigurationReadError  = 2
+	ConfigurationWriteError = 3
 )
 
 const (

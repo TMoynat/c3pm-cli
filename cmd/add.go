@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"ctpm/constants"
 )
@@ -14,15 +14,16 @@ var addCmd = &cobra.Command{
 	Short: "Add a dependency to your project",
 
 	RunE: func(cmd *cobra.Command, args []string) error {
-		readConfigMandatory()
+		readConfigFatal()
 
 		if len(args) < 1 {
 			return errors.New(constants.MissingCommandArgument)
 		}
 
 		newDependency := args[0]
-		fmt.Printf("add called with: %s\n", newDependency)
+		viper.Set("dependencies", newDependency)
 
+		writeConfigFatal()
 		return nil
 	},
 }
