@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"errors"
 	"os"
+	"path/filepath"
+	"strconv"
+	"strings"
 
 	"github.com/spf13/viper"
 	"github.com/manifoldco/promptui"
@@ -25,13 +28,6 @@ var initCmd = &cobra.Command{
 }
 
 func initProject() {
-	validateName := func(input string) error {
-		if len(input) < 1 {
-			return errors.New("Invalid name")
-		}
-		return nil
-	}
-
 	validatePath := func(input string) error {
 		if _, err := os.Stat(input); !os.IsNotExist(err) {
 			return errors.New("Invalid path")
@@ -39,9 +35,16 @@ func initProject() {
 		return nil
 	}
 
+	validateVersion := func(input string) error {
+		_, err := strconv.ParseFloat(input, 64)
+		if err != nil {
+			return errors.New("Invalid version")
+		}
+		return nil
+	}
+
 	name := promptui.Prompt{
 		Label:    "Project name ",
-		Validate: validateName,
 	}
 	pName, err := name.Run()
 	checkError(err)
@@ -50,6 +53,13 @@ func initProject() {
 		Label:    "Author ",
 	}
 	pAuth, err := author.Run()
+	checkError(err)
+
+	version := promptui.Prompt{
+		Label:    "Version ",
+		Validate: validateVersion,
+	}
+	pVers, err := version.Run()
 	checkError(err)
 
 	path := promptui.Prompt{
@@ -66,12 +76,24 @@ func initProject() {
 	pDesc, err := description.Run()
 	checkError(err)
 
-	configProject(pName, pAuth, pDesc)
+	configProject(pName, pAuth, pDesc, pVers)
 }
 
-func configProject(pName, pAuth, pDesc string) {
-	viper.Set("name", pName)
+func configProject(pName, pAuth, pDesc, pVers string) {
+	if len(pName) < 1 {
+		dir, err := os.Getwd()
+		viper.Set("name", filepath.Base(dir))
+		checkError(err)
+	} else {
+		viper.Set("name", pName)
+	}
 	viper.Set("author", pAuth)
+	if len(pVers) < 3 {
+		viper.Set("version", "1.0.0")
+	} else {
+		s := []string{pVers, ".0"}
+		viper.Set("version", strings.Join(s, ""))
+	}
 	viper.Set("description", pDesc)
 	err := viper.WriteConfig()
 	checkError(err)
