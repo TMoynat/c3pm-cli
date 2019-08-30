@@ -4,50 +4,44 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	"github.com/spf13/cobra"
+
+	"ctpm/constants"
 )
 
-var configFile string
-
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use: os.Args[0],
+	Use:   "ctpm",
+	Short: "ctpm (c3pm) is a package manager for C++",
 }
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		os.Exit(1)
+		fmt.Printf("Error: %s.\n", err)
+		fmt.Println("Please, use the help command to know more.")
+
+		os.Exit(constants.CommandError)
 	}
-    err := viper.WriteConfig()
-    if err != nil {
-    	os.Exit(0)
-	}
-	//fmt.Println("debug")
 }
 
 func init() {
+	// We silence usage here as the cmdError type
+	// invites the user to display the usage when displayed
+	rootCmd.SilenceUsage = true
+
+	// We silence the errors as we handle the printing ourselves
+	rootCmd.SilenceErrors = true
+
 	cobra.OnInitialize(initConfig)
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
 }
 
-// initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	configFile = "c3pm.yml"
-	viper.SetConfigType("yml")
-	viper.SetConfigFile(configFile)
+	// We are looking at "./c3pm.yml"
 	viper.AddConfigPath(".")
-	viper.SetEnvPrefix("c3pm")
-	viper.AutomaticEnv() // read in environment variables that match
+	viper.SetConfigType("yml")
+	viper.SetConfigName("c3pm")
 
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
+	// Commands are then responsible for reading the configuration file
+	// when needed
 }
