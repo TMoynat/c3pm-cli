@@ -4,7 +4,6 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
-	//"strings"
 
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
