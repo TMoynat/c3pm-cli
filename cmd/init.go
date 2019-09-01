@@ -4,12 +4,12 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 
-	"github.com/spf13/viper"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"github.com/blang/semver"
 
 	"ctpm/constants"
 )
@@ -28,7 +28,7 @@ var initCmd = &cobra.Command{
 		if len(args) < 1 {
 			err := initProject()
 			if err != nil {
-				return constants.ConfigurationWriteExitStatus
+				return err
 			}
 		} else {
 			if _, err := os.Stat(args[0]); !os.IsNotExist(err) {
@@ -38,7 +38,7 @@ var initCmd = &cobra.Command{
 			providedFolder = args[0]
 			err := initProject()
 			if err != nil {
-				return constants.ConfigurationWriteExitStatus
+				return err
 			}
 		}
 		return nil
@@ -47,7 +47,7 @@ var initCmd = &cobra.Command{
 
 func initProject() error {
 	validateVersion := func(input string) error {
-		_, err := strconv.ParseFloat(input, 64)
+		_, err := semver.Parse(input)
 		if err != nil {
 			return errors.New("Invalid version")
 		}
@@ -109,12 +109,7 @@ func configProject(project Config) error {
 		viper.Set("name", project.name)
 	}
 	viper.Set("author", project.author)
-	if len(project.version) < 3 {
-		viper.Set("version", "1.0.0")
-	} else {
-		s := []string{project.version, ".0"}
-		viper.Set("version", strings.Join(s, ""))
-	}
+	viper.Set("version", project.version)
 	viper.Set("description", project.description)
 	err := viper.WriteConfigAs(filepath.Join(providedFolder, constants.ConfigurationFileName))
 	if err != nil {
