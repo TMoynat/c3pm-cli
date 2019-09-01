@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
-	"strings"
+	//"strings"
 
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
@@ -48,7 +48,7 @@ var initCmd = &cobra.Command{
 func initProject() error {
 	validateVersion := func(input string) error {
 		_, err := semver.Parse(input)
-		if err != nil {
+		if err != nil && input != "" {
 			return errors.New("Invalid version")
 		}
 		return nil
@@ -109,7 +109,11 @@ func configProject(project Config) error {
 		viper.Set("name", project.name)
 	}
 	viper.Set("author", project.author)
-	viper.Set("version", project.version)
+	if (len(project.version) != 5) {
+		viper.Set("version", "1.0.0")
+	} else {
+		viper.Set("version", project.version)
+	}
 	viper.Set("description", project.description)
 	err := viper.WriteConfigAs(filepath.Join(providedFolder, constants.ConfigurationFileName))
 	if err != nil {
